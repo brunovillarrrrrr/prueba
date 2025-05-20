@@ -1,0 +1,208 @@
+/**
+ * =============================================
+ * ALS Jurídico - Estilos para Derecho Familiar
+ * Diseño optimizado y coherente con el estilo corporativo
+ * =============================================
+ */
+
+/* Hero Section - Derecho Familiar */
+.hero-familiar {
+  background-image: linear-gradient(#0b121dd9, rgba(0, 0, 0, 0.85)), 
+                    url('../../imagenes/oficinas_ALS_0.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  padding: 6rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.hero-familiar .title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-familiar .lead {
+  font-size: 1.25rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Sección de servicios */
+.servicio-content {
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: 2rem;
+  height: 100%;
+  box-shadow: var(--shadow-sm);
+  border-top: 4px solid var(--main-color);
+  transition: all var(--transition-normal);
+  margin-bottom: 1.5rem;
+}
+
+.servicio-content:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.servicio-icon {
+  color: var(--main-color);
+  font-size: 2.2rem;
+  margin-bottom: 1.2rem;
+  transition: transform var(--transition-normal);
+}
+
+.servicio-content:hover .servicio-icon {
+  transform: scale(1.1);
+}
+
+.servicio-content h3 {
+  color: var(--main-color);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.servicio-content p {
+  color: #555;
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
+
+.servicio-content ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
+}
+
+.servicio-content ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.6;
+}
+
+.servicio-content ul li:before {
+  content: "•";
+  color: var(--main-color);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* Sección de enfoque */
+.beneficio-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.beneficio-icon {
+  color: var(--main-color);
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.3rem;
+}
+
+.beneficio-item h5 {
+  color: var(--main-color);
+  margin-bottom: 0.3rem;
+  font-size: 1.1rem;
+}
+
+/* Proceso legal */
+.proceso-box {
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: 1.8rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--main-color);
+  transition: all var(--transition-normal);
+  height: 100%;
+  text-align: center;
+}
+
+.proceso-box:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.proceso-box .badge {
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.proceso-box h4 {
+  color: var(--main-color);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+/* Testimonios (si los agregas) */
+.testimonio-card {
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.testimonio-card:before {
+  content: '"';
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-size: 5rem;
+  color: rgba(20, 32, 53, 0.1);
+  font-family: serif;
+  line-height: 1;
+}
+
+.testimonio-text {
+  position: relative;
+  z-index: 1;
+  font-style: italic;
+  color: #555;
+}
+
+/* Sección de contacto específica */
+#contacto-familiar .bg-primary {
+  background-color: var(--main-color) !important;
+}
+.color{
+    background-color: hsl(218, 73%, 19%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-familiar {
+    padding: 4rem 0;
+  }
+  
+  .hero-familiar .title {
+    font-size: 2rem;
+  }
+  
+  .hero-familiar .lead {
+    font-size: 1.1rem;
+  }
+  
+  .servicio-content {
+    padding: 1.5rem;
+  }
+  
+  .proceso-box {
+    padding: 1.5rem;
+  }
+}

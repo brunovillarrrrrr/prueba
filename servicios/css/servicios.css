@@ -1,0 +1,174 @@
+/**
+ * =============================================
+ * ALS Soluciones Jurídico Empresariales - Servicios
+ * Estilos mejorados para la página de servicios
+ * =============================================
+ */
+
+/* Estilos generales para la sección de servicios */
+#servicios-legales {
+  padding: 3rem 0;
+}
+
+.section-title h1 {
+  color: var(--main-color);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title h1:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--main-color);
+}
+
+.section-title p.lead {
+  color: var(--text-color);
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Estilos para las tarjetas de servicio */
+.servicio-card {
+  margin-bottom: 2rem;
+  transition: all var(--transition-normal);
+}
+
+.servicio-content {
+  background-color: white;
+  border-radius: var(--border-radius-md);
+  padding: 2rem;
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-top: 4px solid var(--main-color);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.servicio-content:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--main-color), #0f192b);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.servicio-icon {
+  font-size: 2.5rem;
+  color: var(--main-color);
+  margin-bottom: 1.5rem;
+  transition: transform var(--transition-normal);
+}
+
+.servicio-content h2 {
+  color: var(--main-color);
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+}
+
+.servicio-intro {
+  color: #555;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.servicio-content ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 2rem;
+}
+
+.servicio-content ul li {
+  position: relative;
+  padding-left: 1.8rem;
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.servicio-content ul li:before {
+  content: "•";
+  color: var(--main-color);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+.btn-servicio {
+  display: inline-block;
+  background-color: var(--main-color);
+  color: white;
+  padding: 0.7rem 1.8rem;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  border: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 10px rgba(20, 32, 53, 0.2);
+}
+
+.btn-servicio:hover {
+  background-color: #0f192b;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(20, 32, 53, 0.3);
+  color: white;
+}
+
+/* Efectos hover */
+.servicio-card:hover .servicio-content {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.servicio-card:hover .servicio-content:before {
+  opacity: 1;
+}
+
+.servicio-card:hover .servicio-icon {
+  transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .servicio-content {
+    padding: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title h1 {
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+  }
+  
+  .servicio-content {
+    padding: 1.5rem;
+  }
+  
+  .servicio-content h2 {
+    font-size: 1.3rem;
+  }
+  
+  .servicio-icon {
+    font-size: 2rem;
+  }
+}

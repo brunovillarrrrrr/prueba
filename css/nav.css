@@ -1,0 +1,56 @@
+/**
+ * =============================================
+ * ALS Soluciones Jurídico Empresariales - NAV
+ * Estilos exactos del navbar original
+ * =============================================
+ */
+
+/* -------------------- Header/Navbar -------------------- */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  background-color: var(--main-color);
+  will-change: background-color, backdrop-filter;
+}
+
+header.scrolled {
+  background-color: rgba(20, 32, 53, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0.3rem 0;
+}
+
+.navbar {
+  padding: 0.5rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-color);
+  transition: width var(--transition-normal);
+  will-change: width;
+}
+
+.navbar-brand:hover::after {
+  width: 100%;
+}
+
+.navbar-brand i {
+  margin-right: 0.5rem;
+}
