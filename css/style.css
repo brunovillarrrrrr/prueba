@@ -613,3 +613,107 @@ footer a:hover {
 .logo-circular {
   object-position: center center; /* Asegura que el logo esté centrado */
 }
+/* ==================== ESTILOS CORREGIDOS PARA BLOG POST ==================== */
+.blog-post {
+  background: white;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  /* ELIMINAR height: 100% - Esto era el principal problema */
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-post.featured {
+  border-left: 4px solid var(--main-color);
+  /* No necesitamos altura especial para el featured */
+}
+
+.blog-post:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.post-image {
+  overflow: hidden;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 1rem;
+  /* Añadir relación de aspecto para las imágenes */
+  aspect-ratio: 16/9;
+}
+
+.post-image img {
+  transition: transform var(--transition-slow);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Contenido del post - crecerá naturalmente */
+.post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-meta {
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.post-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--main-color);
+  line-height: 1.3;
+  /* Limitar a 3 líneas máximo */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-excerpt {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  /* Limitar a 4 líneas máximo */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Botón alineado al final */
+.post-actions {
+  margin-top: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .post-image {
+    aspect-ratio: 16/9;
+  }
+  
+  .post-title {
+    font-size: 1.3rem;
+    -webkit-line-clamp: 2;
+  }
+  
+  .post-excerpt {
+    -webkit-line-clamp: 3;
+  }
+  
+  .post-meta {
+    font-size: 0.8rem;
+    gap: 0.5rem;
+  }
+}
