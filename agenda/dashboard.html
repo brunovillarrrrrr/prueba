@@ -81,22 +81,39 @@
     </main>
   </div>
 
-  <!-- ─── Modal Nuevo Evento ─── -->
+  <!-- ─── Modal Nuevo / Editar Evento ─── -->
   <div id="modalBg" class="modal-bg">
     <div class="modal">
       <h2>Nuevo evento</h2>
       <form id="eventForm">
-        <label>Título</label>    <input id="evtTitle" required>
-        <label>Inicio</label>    <input id="evtStart" type="datetime-local" required>
-        <label>Fin</label>       <input id="evtEnd"   type="datetime-local" required>
+        <!-- Hidden field para edición -->
+        <input type="hidden" id="evtId">
+
+        <label>Título</label>
+        <input id="evtTitle" required>
+
+        <label>Inicio</label>
+        <input id="evtStart" type="datetime-local" required>
+
+        <label>Fin</label>
+        <input id="evtEnd" type="datetime-local" required>
+
         <label>Categoría</label>
         <select id="evtCategory">
-          <option>Trabajo</option><option>Personal</option><option>Cita</option><option>Otro</option>
+          <option>Trabajo</option>
+          <option>Personal</option>
+          <option>Cita</option>
+          <option>Otro</option>
         </select>
-        <label>Descripción</label><textarea id="evtDesc" rows="2"></textarea>
+
+        <label>Descripción</label>
+        <textarea id="evtDesc" rows="2"></textarea>
 
         <div class="modal-buttons">
           <button type="button" id="cancelBtn" class="cancel-btn">Cancelar</button>
+          <button type="button" id="deleteBtn" class="delete-btn" style="display:none; margin-right: var(--space-2);">
+            Eliminar
+          </button>
           <button class="save-btn">Guardar</button>
         </div>
       </form>

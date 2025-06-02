@@ -3,7 +3,7 @@
    · SQLite (sql.js) en navegador  + persistencia localStorage
    · Tema claro / oscuro  + sidebar colapsable
    · Vista MES  +  Vista DÍA (timeline)
-   · CRUD de eventos  +  toast  +  notificación push
+   · CRUD de eventos  +  drag&drop para mover hora/día  +  toast + notificación push
 ───────────────────────────────────────────────────────────── */
 
 let db;
@@ -158,17 +158,22 @@ function buildTimeline() {
        </div>`
     );
   }
+
+  // Hacer que cada slot acepte drop
   wrap
     .querySelectorAll(".hour-slot")
-    .forEach(
-      (slot) => (slot.ondblclick = () => openModal(+slot.dataset.hour))
-    );
+    .forEach((slot) => {
+      slot.ondblclick = () => openModal(+slot.dataset.hour);
+      slot.ondragover = (e) => e.preventDefault();
+      slot.ondrop = onDropEvent;
+    });
 }
+
 function loadEvents(dateStr) {
   if (!db) return;
   buildTimeline();
   const stmt = db.prepare(
-    "SELECT title,start_time,end_time,category FROM events WHERE date(start_time)=?"
+    "SELECT id,title,start_time,end_time,category FROM events WHERE date(start_time)=?"
   );
   stmt.bind([dateStr]);
   while (stmt.step()) {
@@ -181,20 +186,77 @@ function loadEvents(dateStr) {
 
     const div = document.createElement("div");
     div.className = "event";
+    div.setAttribute("draggable", "true");
+    div.dataset.id = ev.id; // para referencia
     if (ev.category) div.classList.add(ev.category.toLowerCase());
     div.textContent = ev.title;
     div.dataset.tooltip = `${ev.title} (${s
       .toTimeString()
       .slice(0, 5)}-${e.toTimeString().slice(0, 5)})`;
     if (dur > 1) div.style.height = `${dur * 40 - 4}px`;
+
+    // Cuando arranca el drag, guardo el id y la hora original
+    div.ondragstart = (e) => {
+      e.dataTransfer.setData("text/plain", ev.id);
+      e.dataTransfer.effectAllowed = "move";
+    };
+
+    // Al hacer clic, abro el modal para editar/borrar
+    div.onclick = () => openEditModal(ev.id, ev.title, ev.start_time, ev.end_time, ev.category, ev);
+
     slot.appendChild(div);
   }
   stmt.free();
 }
 
+/* ===== Drag&Drop: al soltar ===== */
+function onDropEvent(e) {
+  e.preventDefault();
+  const id = e.dataTransfer.getData("text/plain");
+  const slotHour = +e.currentTarget.dataset.hour;
+  const date = $("#datePicker").value; // día actual en el datepicker
+
+  // Hago una SELECT para sacar duración
+  const sel = db.prepare("SELECT start_time,end_time FROM events WHERE id = ?");
+  sel.bind([id]);
+  sel.step();
+  const row = sel.getAsObject();
+  sel.free();
+  if (!row.start_time) return;
+
+  const oldStart = new Date(row.start_time);
+  const durationHours = (new Date(row.end_time) - oldStart) / 3600000;
+
+  // Nuevo inicio = date + slotHour
+  const newStart = new Date(`${date}T${String(slotHour).padStart(2, "0")}:00`);
+  const newEnd = new Date(newStart.getTime() + durationHours * 3600000);
+
+  // UPDATE en la DB
+  db.run(
+    `UPDATE events SET start_time = ?, end_time = ? WHERE id = ?`,
+    [newStart.toISOString(), newEnd.toISOString(), id]
+  );
+  persistDb();
+
+  // ⚡ animación de pulso en el punto rojo del mes (si hubiera un día nuevo)
+  const dayCell = document.querySelector(`.calendar-grid .day[data-date="${date}"]`);
+  if (dayCell) {
+    dayCell.classList.add("pulse");
+    setTimeout(() => dayCell.classList.remove("pulse"), 400);
+  }
+
+  // Recargo vistas
+  buildMonthView(new Date($("#datePicker").value));
+  loadEvents($("#datePicker").value);
+}
+
 /* ===== Modal CRUD ===== */
 function openModal(hour) {
-  $("#modalBg").style.display = "flex";
+  $("#evtId").value = ""; // limpio para “nuevo”
+  $("#evtTitle").value = "";
+  $("#evtCategory").value = "Trabajo";
+  $("#evtDesc").value = "";
+
   const dSel = $("#datePicker").value || formatDate(new Date());
   const sIn = $("#evtStart");
   const eIn = $("#evtEnd");
@@ -207,39 +269,77 @@ function openModal(hour) {
     sIn.value = now.toISOString().slice(0, 16);
     eIn.value = new Date(now.getTime() + 3600000).toISOString().slice(0, 16);
   }
+
+  $("#deleteBtn").style.display = "none";
+  $("#modalBg").style.display = "flex";
 }
+
+function openEditModal(id, title, start, end, category, evRow) {
+  $("#evtId").value = id;
+  $("#evtTitle").value = title;
+  $("#evtStart").value = start.slice(0, 16);
+  $("#evtEnd").value = end.slice(0, 16);
+  $("#evtCategory").value = category;
+  $("#evtDesc").value = evRow.description || "";
+
+  $("#deleteBtn").style.display = "inline-block";
+  $("#modalBg").style.display = "flex";
+}
+
+// Cerrar modal
 const closeModal = () => ($("#modalBg").style.display = "none");
 
+// Guardar / Actualizar evento
 function saveEvent(e) {
   e.preventDefault();
+  const id = $("#evtId").value;
   const title = $("#evtTitle").value.trim();
   const st = $("#evtStart").value;
   const et = $("#evtEnd").value;
-  if (!title || !st || !et) return alert("Completa título y fechas");
+  const cat = $("#evtCategory").value;
+  const desc = $("#evtDesc").value.trim();
 
-  db.run(
-    `INSERT INTO events(user_id,title,start_time,end_time,category,description)
-     VALUES(1,?,?,?,?,?)`,
-    [title, st, et, $("#evtCategory").value, $("#evtDesc").value.trim()]
-  );
+  if (!title || !st || !et) {
+    return alert("Completa título y fechas");
+  }
+
+  if (id) {
+    // UPDATE
+    db.run(
+      `UPDATE events
+       SET title = ?, start_time = ?, end_time = ?, category = ?, description = ?
+       WHERE id = ?`,
+      [title, st, et, cat, desc, id]
+    );
+  } else {
+    // INSERT
+    db.run(
+      `INSERT INTO events(user_id,title,start_time,end_time,category,description)
+       VALUES(1,?,?,?,?,?)`,
+      [title, st, et, cat, desc]
+    );
+  }
   persistDb();
 
   closeModal();
+  buildMonthView(new Date($("#datePicker").value));
   loadEvents($("#datePicker").value);
-
-  /* Recordatorio push 5 minutos antes */
-  const sTime = new Date(st);
-  const delta = sTime - Date.now() - 5 * 60000;
-  if (delta > 0) {
-    setTimeout(() => {
-      lanzarNoti(
-        "🔔 Recordatorio",
-        `"${title}" a las ${sTime.toTimeString().slice(0, 5)}`
-      );
-      toast(`⏰ ${title} a las ${sTime.toTimeString().slice(0, 5)}`);
-    }, delta);
-  }
 }
+
+// Borrar evento
+document.addEventListener("click", (e) => {
+  if (e.target.matches("#deleteBtn")) {
+    const id = $("#evtId").value;
+    if (!id) return closeModal();
+    if (confirm("¿Eliminar esta cita?")) {
+      db.run(`DELETE FROM events WHERE id = ?`, [id]);
+      persistDb();
+      closeModal();
+      buildMonthView(new Date($("#datePicker").value));
+      loadEvents($("#datePicker").value);
+    }
+  }
+});
 
 /* ===== Navegación ===== */
 function switchToDay(dateStr) {
@@ -249,6 +349,7 @@ function switchToDay(dateStr) {
   $("#datePicker").value = dateStr;
   loadEvents(dateStr);
 }
+
 function backToMonth() {
   $("#daySection").style.display = "none";
   $("#monthSection").style.display = "block";
@@ -258,6 +359,11 @@ function backToMonth() {
 
 /* ===== INIT ===== */
 document.addEventListener("DOMContentLoaded", () => {
+  /* solicitar permiso notificaciones si hace falta */
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+
   /* botones tema */
   document.querySelectorAll(".theme-toggle").forEach((b) => {
     b.innerHTML =

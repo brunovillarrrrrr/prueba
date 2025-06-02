@@ -1,0 +1,63 @@
+/* tokens.css */
+:root {
+  /* Colores de marca */
+  --accent-100: #E4F7FF;
+  --accent-500: #e63946;
+  --accent-700: #c1121f;
+  
+  /* Grises neutrales */
+  --grey-100: #F8F9FA;
+  --grey-200: #E1E3E5;
+  --grey-300: #C4C4C4;
+  --grey-400: #9a9a9a;
+  --grey-500: #6b6b6b;
+  --grey-600: #3b3b3b;
+  --grey-700: #2b2b2b;
+  --grey-800: #242424;
+  --grey-900: #1a1a1a;
+  
+  /* Espaciado (escala de 4 puntos) */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  
+  /* Tipografía fluida */
+  --step-0: clamp(0.875rem, 0.6vw + 0.8rem, 1.125rem);
+  --step-1: clamp(1rem, 0.9vw + 0.9rem, 1.375rem);
+  --step-2: clamp(1.25rem, 1.1vw + 1rem, 1.75rem);
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 1px 4px rgba(0,0,0,.12);
+  --shadow-lg: 0 4px 6px rgba(0,0,0,.1);
+  
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 999px;
+  
+  /* Transiciones */
+  --transition-smooth: background 0.2s ease, color 0.2s ease, transform 0.15s cubic-bezier(.4,0,.2,1);
+  --transition-fade: opacity 0.25s ease;
+}
+
+[data-theme='dark'] {
+  --grey-100: #1a1a1a;
+  --grey-200: #242424;
+  --grey-300: #2b2b2b;
+  --grey-400: #353535;
+  --grey-500: #9a9a9a;
+  --grey-600: #c4c4c4;
+  --grey-700: #e1e1e1;
+  --grey-800: #f0f0f0;
+  --grey-900: #f1f1f1;
+  
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-md: 0 1px 4px rgba(0,0,0,.5);
+  --shadow-lg: 0 4px 6px rgba(0,0,0,.6);
+}
