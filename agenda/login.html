@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agenda · Login</title>
+  <link rel="stylesheet" href="agenda.css" />
+</head>
+<body>
+  <!-- toggle tema -->
+  <button class="theme-toggle" aria-label="Tema oscuro/claro"></button>
+
+  <div class="login-container">
+    <form id="loginForm" class="login-form">
+      <h1>Agenda Digital</h1>
+      <div class="form-group">
+        <label>Email</label><input type="email" required />
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label><input type="password" required />
+      </div>
+      <button class="btn">Entrar</button>
+    </form>
+  </div>
+
+  <!-- sql.js + lógica -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.5.0/sql-wasm.js"></script>
+  <script src="agenda.js"></script>
+</body>
+</html>
